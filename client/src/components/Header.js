@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {HOME, CHECKOUT, ORDERS, CONTACT} from '../utils/constants';
 import {CartConsumer} from './Cart';
+import {Link} from '@reach/router';
 
 class Header extends Component {
   state = {
@@ -12,7 +13,7 @@ class Header extends Component {
   }));
 
   render() {
-    const {updateRoute, cartCount} = this.props;
+    const {cartCount} = this.props;
     const showDropdown = this.state.showDropdown
       ? 'is-active'
       : null;
@@ -21,11 +22,11 @@ class Header extends Component {
       <header className="container">
         <nav className="navbar" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
-            <a className="navbar-item">
-              <h1 className="title is-3" onClick={() => updateRoute({route: HOME})}>
+            <Link className="navbar-item" to={HOME}>
+              <h1 className="title is-3">
                 Formidable Store
               </h1>
-            </a>
+            </Link>
 
             <span
               role="button"
@@ -41,26 +42,26 @@ class Header extends Component {
 
           <div className={`navbar-menu ${showDropdown}`}>
             <div className="navbar-start">
-              <a className="navbar-item" onClick={() => updateRoute({route: HOME})}>
+              <Link className="navbar-item" to={HOME}>
                 Shop
-              </a>
+              </Link>
 
-              <a className="navbar-item" onClick={() => updateRoute({route: ORDERS})}>
+              <Link className="navbar-item" to={ORDERS}>
                 Orders
-              </a>
+              </Link>
 
-              <a className="navbar-item" onClick={() => updateRoute({route: CONTACT})}>
+              <Link className="navbar-item" to={CONTACT}>
                 Contact
-              </a>
+              </Link>
             </div>
             <div className="navbar-end">
               <div className="navbar-item">
                 <div className="button is-primary">
-                  <a onClick={() => updateRoute({route: CHECKOUT})}>
+                  <Link to={CHECKOUT}>
                     {`Cart ${cartCount > 0
                       ? `(${cartCount})`
                       : ''}`}
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -71,9 +72,9 @@ class Header extends Component {
   }
 }
 
-const ConnectedHeader = ({updateRoute}) => (
+const ConnectedHeader = () => (
   <CartConsumer>
-    {({cart}) => (<Header updateRoute={updateRoute} cartCount={cart.totalQuantity}/>)}
+    {({cart}) => (<Header cartCount={cart.totalQuantity}/>)}
   </CartConsumer>
 );
 

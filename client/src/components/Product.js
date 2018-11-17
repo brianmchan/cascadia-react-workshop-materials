@@ -2,17 +2,14 @@ import React, {Component} from 'react';
 import {priceInDollars} from '../utils';
 import {DETAIL} from '../utils/constants';
 import {CartConsumer} from './Cart';
+import {navigate, Link} from '@reach/router';
 
 const ONE = 1;
 
 class Product extends Component {
   navigateTo = () => {
     const productId = this.props.product.id;
-    this
-      .props
-      .updateRoute({route: DETAIL, params: {
-          productId
-        }});
+    navigate(`${DETAIL}/${productId}`);
   };
 
   addToCart = e => {
@@ -24,7 +21,7 @@ class Product extends Component {
   };
 
   render() {
-    const {imageUrl, name, price} = this.props.product;
+    const {imageUrl, name, price, id} = this.props.product;
 
     return (
       <div className="card" onClick={this.navigateTo}>
@@ -48,9 +45,9 @@ class Product extends Component {
           </div>
         </div>
         <footer className="card-footer">
-          <a href="#" className="card-footer-item">
+          <Link to={`${DETAIL}/${id}`} href="#" className="card-footer-item">
             Details
-          </a>
+          </Link>
           <span
             style={{
             cursor: 'pointer',
@@ -66,12 +63,9 @@ class Product extends Component {
   }
 }
 
-const ConnectedProduct = ({updateRoute, product}) => (
+const ConnectedProduct = ({product}) => (
   <CartConsumer>
-    {({updateQuantity}) => (<Product
-      product={product}
-      updateRoute={updateRoute}
-      updateQuantity={updateQuantity}/>)}
+    {({updateQuantity}) => (<Product product={product} updateQuantity={updateQuantity}/>)}
   </CartConsumer>
 );
 

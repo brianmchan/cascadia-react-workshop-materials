@@ -1,44 +1,31 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Header from './Header';
 import HomePage from '../pages/HomePage';
 import DetailPage from '../pages/DetailPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import OrdersPage from '../pages/OrdersPage';
 import ContactPage from '../pages/ContactPage';
+import {Router} from '@reach/router';
 import {CartProvider} from './Cart';
 
 import {HOME, CHECKOUT, DETAIL, ORDERS, CONTACT} from '../utils/constants';
 
-class App extends Component {
-  state = {
-    route: HOME,
-    params: {}
-  };
-
-  updateRoute = ({
-    route,
-    params = {}
-  }) => {
-    this.setState({route, params});
-  };
-
-  render() {
-    const {route} = this.state;
-
-    return (
-      <div className="App">
-        <Header updateRoute={this.updateRoute}/>
-        <div className="section">
-          {route === HOME && (<HomePage updateRoute={this.updateRoute}/>)}
-          {route === CHECKOUT && (<CheckoutPage/>)}
-          {route === DETAIL && (<DetailPage productId={this.state.params.productId}/>)}
-          {route === ORDERS && <OrdersPage/>}
-          {route === CONTACT && <ContactPage updateRoute={this.updateRoute}/>}
-        </div>
+const App = () => {
+  return (
+    <div className="App">
+      <Header/>
+      <div className="section">
+        <Router>
+          <HomePage path={HOME}/>
+          <CheckoutPage path={CHECKOUT}/>
+          <DetailPage path={`${DETAIL}/:productId`}/>
+          <OrdersPage path={ORDERS}/>
+          <ContactPage path={CONTACT}/>
+        </Router>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 const ConnectedApp = () => (
   <CartProvider>
