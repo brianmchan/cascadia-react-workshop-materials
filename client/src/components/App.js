@@ -24,17 +24,14 @@ class App extends Component {
 
   render() {
     const {route} = this.state;
-    const {cart, updateQuantity, purchaseCart} = this.props;
+    const {updateQuantity} = this.props;
 
     return (
       <div className="App">
-        <Header updateRoute={this.updateRoute} cartCount={cart.totalQuantity}/>
+        <Header updateRoute={this.updateRoute}/>
         <div className="section">
           {route === HOME && (<HomePage updateRoute={this.updateRoute} updateQuantity={updateQuantity}/>)}
-          {route === CHECKOUT && (<CheckoutPage
-            cart={cart}
-            updateQuantity={updateQuantity}
-            purchaseCart={purchaseCart}/>)}
+          {route === CHECKOUT && (<CheckoutPage/>)}
           {route === DETAIL && (<DetailPage
             productId={this.state.params.productId}
             updateQuantity={updateQuantity}/>)}
