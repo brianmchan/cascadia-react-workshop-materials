@@ -1,16 +1,40 @@
 import React from 'react';
-import Form from './Form';
+import {Formik} from 'formik';
+import * as yup from 'yup';
 
 const initialValues = {
   name: '',
   number: '',
   expiry: '',
-  cvc: '',
+  cvc: ''
 };
 
-const CreditCardForm = ({ onSubmit }) => (
-  <Form initialValues={initialValues} onSubmit={onSubmit}>
-    {({ values, handleChange, handleSubmit }) => (
+const CreditCardSchema = yup
+  .object()
+  .shape({
+    name: yup
+      .string()
+      .required('Required'),
+    number: yup
+      .string()
+      .min(16, 'Too short!')
+      .max(16, 'Too long!')
+      .required('Required'),
+    expiry: yup
+      .string()
+      .required('Required'),
+    cvc: yup
+      .string()
+      .required('Required')
+  });
+
+const CreditCardForm = ({onSubmit}) => (
+  <Formik
+    initialValues={initialValues}
+    onSubmit={onSubmit}
+    validationSchema={CreditCardSchema}>
+
+    {({values, handleChange, handleSubmit, errors, touched}) => (
       <form onSubmit={handleSubmit}>
         <div className="field">
           <label className="label">Full Name</label>
@@ -22,9 +46,10 @@ const CreditCardForm = ({ onSubmit }) => (
               name="name"
               value={values.name}
               onChange={handleChange}
-              data-testid="name-input"
-            />
-            <p className="help is-danger">{null}</p>
+              data-testid="name-input"/>
+            <p className="help is-danger">
+              {touched.name && errors.name}
+            </p>
           </div>
         </div>
         <div className="field">
@@ -37,9 +62,10 @@ const CreditCardForm = ({ onSubmit }) => (
               name="number"
               value={values.number}
               onChange={handleChange}
-              data-testid="number-input"
-            />
-            <p className="help is-danger">{null}</p>
+              data-testid="number-input"/>
+            <p className="help is-danger">
+              {touched.number && errors.number}
+            </p>
           </div>
         </div>
         <div className="field is-horizontal">
@@ -54,9 +80,10 @@ const CreditCardForm = ({ onSubmit }) => (
                   name="expiry"
                   value={values.expiry}
                   onChange={handleChange}
-                  data-testid="expiry-input"
-                />
-                <p className="help is-danger">{null}</p>
+                  data-testid="expiry-input"/>
+                <p className="help is-danger">
+                  {touched.expiry && errors.expiry}
+                </p>
               </div>
             </div>
             <div className="field">
@@ -69,27 +96,27 @@ const CreditCardForm = ({ onSubmit }) => (
                   name="cvc"
                   value={values.cvc}
                   onChange={handleChange}
-                  data-testid="cvc-input"
-                />
-                <p className="help is-danger">{null}</p>
+                  data-testid="cvc-input"/>
+                <p className="help is-danger">
+                  {touched.cvc && errors.cvc}
+                </p>
               </div>
             </div>
           </div>
         </div>
-        <br />
+        <br/>
         <div className="field">
           <div className="control">
             <input
               type="submit"
               value="Place Order"
               className="button is-primary"
-              data-testid="submit-input"
-            />
+              data-testid="submit-input"/>
           </div>
         </div>
       </form>
     )}
-  </Form>
+  </Formik>
 );
 
 export default CreditCardForm;
