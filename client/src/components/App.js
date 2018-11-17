@@ -24,17 +24,14 @@ class App extends Component {
 
   render() {
     const {route} = this.state;
-    const {updateQuantity} = this.props;
 
     return (
       <div className="App">
         <Header updateRoute={this.updateRoute}/>
         <div className="section">
-          {route === HOME && (<HomePage updateRoute={this.updateRoute} updateQuantity={updateQuantity}/>)}
+          {route === HOME && (<HomePage updateRoute={this.updateRoute}/>)}
           {route === CHECKOUT && (<CheckoutPage/>)}
-          {route === DETAIL && (<DetailPage
-            productId={this.state.params.productId}
-            updateQuantity={updateQuantity}/>)}
+          {route === DETAIL && (<DetailPage productId={this.state.params.productId}/>)}
           {route === ORDERS && <OrdersPage/>}
           {route === CONTACT && <ContactPage updateRoute={this.updateRoute}/>}
         </div>
@@ -43,6 +40,10 @@ class App extends Component {
   }
 }
 
-const ConnectedApp = () => <CartProvider>{({cart, updateQuantity, purchaseCart}) => (<App cart={cart} updateQuantity={updateQuantity} purchaseCart={purchaseCart}/>)}</CartProvider>
+const ConnectedApp = () => (
+  <CartProvider>
+    <App/>
+  </CartProvider>
+);
 
 export default ConnectedApp;

@@ -59,9 +59,7 @@ class Cart extends Component {
                 updateQuantity: this.updateQuantity,
                 purchaseCart: this.purchaseCart
             }}>
-                {this
-                    .props
-                    .children({cart: this.state.cart, updateQuantity: this.updateQuantity, purchaseCart: this.purchaseCart})}
+                {this.props.children}
             </CartContext.Provider>
         );
     }
