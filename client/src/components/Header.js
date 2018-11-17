@@ -1,27 +1,28 @@
-import React, { Component } from 'react';
-import { HOME, CHECKOUT, ORDERS, CONTACT } from '../utils/constants';
+import React, {Component} from 'react';
+import {HOME, CHECKOUT, ORDERS, CONTACT} from '../utils/constants';
+import {CartConsumer} from './Cart';
 
 class Header extends Component {
   state = {
-    showDropdown: false,
+    showDropdown: false
   };
 
-  toggleDropdown = () =>
-    this.setState(({ showDropdown }) => ({ showDropdown: !showDropdown }));
+  toggleDropdown = () => this.setState(({showDropdown}) => ({
+    showDropdown: !showDropdown
+  }));
 
   render() {
-    const { updateRoute, cartCount } = this.props;
-    const showDropdown = this.state.showDropdown ? 'is-active' : null;
+    const {updateRoute, cartCount} = this.props;
+    const showDropdown = this.state.showDropdown
+      ? 'is-active'
+      : null;
 
     return (
       <header className="container">
         <nav className="navbar" role="navigation" aria-label="main navigation">
           <div className="navbar-brand">
             <a className="navbar-item">
-              <h1
-                className="title is-3"
-                onClick={() => updateRoute({ route: HOME })}
-              >
+              <h1 className="title is-3" onClick={() => updateRoute({route: HOME})}>
                 Formidable Store
               </h1>
             </a>
@@ -31,42 +32,34 @@ class Header extends Component {
               className={`navbar-burger burger ${showDropdown}`}
               aria-label="menu"
               aria-expanded="false"
-              onClick={this.toggleDropdown}
-            >
-              <span aria-hidden="true" />
-              <span aria-hidden="true" />
-              <span aria-hidden="true" />
+              onClick={this.toggleDropdown}>
+              <span aria-hidden="true"/>
+              <span aria-hidden="true"/>
+              <span aria-hidden="true"/>
             </span>
           </div>
 
           <div className={`navbar-menu ${showDropdown}`}>
             <div className="navbar-start">
-              <a
-                className="navbar-item"
-                onClick={() => updateRoute({ route: HOME })}
-              >
+              <a className="navbar-item" onClick={() => updateRoute({route: HOME})}>
                 Shop
               </a>
 
-              <a
-                className="navbar-item"
-                onClick={() => updateRoute({ route: ORDERS })}
-              >
+              <a className="navbar-item" onClick={() => updateRoute({route: ORDERS})}>
                 Orders
               </a>
 
-              <a
-                className="navbar-item"
-                onClick={() => updateRoute({ route: CONTACT })}
-              >
+              <a className="navbar-item" onClick={() => updateRoute({route: CONTACT})}>
                 Contact
               </a>
             </div>
             <div className="navbar-end">
               <div className="navbar-item">
                 <div className="button is-primary">
-                  <a onClick={() => updateRoute({ route: CHECKOUT })}>
-                    {`Cart ${cartCount > 0 ? `(${cartCount})` : ''}`}
+                  <a onClick={() => updateRoute({route: CHECKOUT})}>
+                    {`Cart ${cartCount > 0
+                      ? `(${cartCount})`
+                      : ''}`}
                   </a>
                 </div>
               </div>
@@ -78,4 +71,10 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const ConnectedHeader = ({updateRoute}) => (
+  <CartConsumer>
+    {({cart}) => (<Header updateRoute={updateRoute} cartCount={cart.totalQuantity}/>)}
+  </CartConsumer>
+);
+
+export default ConnectedHeader;
