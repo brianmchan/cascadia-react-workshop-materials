@@ -3,10 +3,27 @@ import {priceInDollars} from '../utils';
 import {DETAIL} from '../utils/constants';
 import {CartConsumer} from './Cart';
 import {navigate, Link} from '@reach/router';
+import posed from 'react-pose';
+
+const Box = posed.div({
+  active: {
+    transform: 'scale(1.05)'
+  },
+  inactive: {
+    transform: 'scale(1)'
+  }
+});
 
 const ONE = 1;
 
 class Product extends Component {
+  state = {
+    active: false
+  }
+
+  handleOnMouseEnter = () => this.setState({active: true});
+  handleOnMouseLeave = () => this.setState({active: false});
+
   navigateTo = () => {
     const productId = this.props.product.id;
     navigate(`${DETAIL}/${productId}`);
@@ -24,7 +41,14 @@ class Product extends Component {
     const {imageUrl, name, price, id} = this.props.product;
 
     return (
-      <div className="card" onClick={this.navigateTo}>
+      <Box
+        onMouseEnter={this.handleOnMouseEnter}
+        onMouseLeave={this.handleOnMouseLeave}
+        pose={this.state.active
+        ? 'active'
+        : 'inactive'}
+        className="card"
+        onClick={this.navigateTo}>
         <div className="card-image">
           <figure className="image is-5by3">
             <img src={imageUrl} alt={name}/>
@@ -58,7 +82,7 @@ class Product extends Component {
             Add to cart
           </span>
         </footer>
-      </div>
+      </Box>
     );
   }
 }
